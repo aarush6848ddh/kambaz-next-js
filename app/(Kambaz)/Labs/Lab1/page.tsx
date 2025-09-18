@@ -3,7 +3,31 @@
 export default function Lab1() {
   return (
     <div id="wd-lab1">
-      <h2>Lab 1</h2>
+      <h1>Lab Exercises</h1>
+      <h2>Student Information</h2>
+      <p><strong>Name:</strong> Aarush Singh</p>
+      <p><strong>Section:</strong> CS4550 Fall 2024</p>
+      
+      <h2>Lab Assignments</h2>
+      <ul>
+        <li><a href="/Labs/Lab1">Lab 1: HTML Examples</a></li>
+        <li><a href="/Labs/Lab2">Lab 2: CSS Basics</a></li>
+        <li><a href="/Labs/Lab3">Lab 3: JavaScript Fundamentals</a></li>
+      </ul>
+      
+      <h2>Applications</h2>
+      <ul>
+        <li><a href="/">Kambaz Application</a></li>
+      </ul>
+      
+      <h2>Source Code Repositories</h2>
+      <ul>
+        <li><a href="https://github.com/aarush6848ddh/kambaz-next-js" target="_blank">Kambaz Next.js Repository</a></li>
+        <li><a href="https://github.com/aarush6848ddh" target="_blank">My GitHub Profile</a></li>
+      </ul>
+      
+      <hr />
+      <h2>Lab 1: HTML Examples</h2>
       <h3>HTML Examples</h3>
       <div id="wd-h-tag">
         <h4>Heading Tags</h4>

@@ -9,8 +9,11 @@ export default function Kambaz() {
         <Link href="/Account/Signin" style={{ marginRight: "20px" }}>
           Sign In
         </Link>
-        <Link href="/Dashboard">
+        <Link href="/Dashboard" style={{ marginRight: "20px" }}>
           Dashboard
+        </Link>
+        <Link href="/Labs/Lab1">
+          Lab Exercises
         </Link>
       </div>
     </div>
