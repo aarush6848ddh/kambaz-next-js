@@ -1,5 +1,15 @@
 import Link from "next/link";
-import Image from "next/image";
+import { Card, CardImg, CardBody, CardTitle, CardText, Button } from "react-bootstrap";
+
+const coursesData = [
+  { id: "1234", title: "CS4550 Web Development", subtitle: "Full Stack software developer", image: "/reactlogo.jpg" },
+  { id: "1235", title: "CS4550 Node.js", subtitle: "Backend development with Node.js", image: "/nodejslogo.jpeg" },
+  { id: "1236", title: "CS4550 MongoDB", subtitle: "NoSQL database management", image: "/mongodblogo.jpg" },
+  { id: "1237", title: "CS4550 Express.js", subtitle: "Web application framework", image: "/expresslogo.jpg" },
+  { id: "1238", title: "CS4550 JavaScript", subtitle: "Modern JavaScript programming", image: "/javascriptlogo.jpg" },
+  { id: "1239", title: "CS4550 HTML/CSS", subtitle: "Web development fundamentals", image: "/htmlcsslogo.jpg" },
+  { id: "1240", title: "CS4550 Python", subtitle: "Python programming language", image: "/python logo.jpeg" }
+];
 
 export default function Dashboard() {
   return (
@@ -7,92 +17,50 @@ export default function Dashboard() {
       <h1 id="wd-dashboard-title">Dashboard</h1>
       <hr />
       <h2 id="wd-dashboard-published">Published Courses</h2>
-      <hr />
-      <div id="wd-dashboard-courses" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px", padding: "20px" }}>
-        <div className="wd-dashboard-course" style={{ border: "1px solid #ccc", borderRadius: "8px", padding: "15px", backgroundColor: "#f9f9f9" }}>
-          <Link href="/Courses/1234" className="wd-dashboard-course-link" style={{ textDecoration: "none", color: "inherit" }}>
-            <Image src="/reactlogo.jpg" width={200} height={150} alt="React.js logo" style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "4px" }} />
-            <div style={{ padding: "10px 0" }}>
-              <h5 style={{ margin: "0 0 10px 0", fontSize: "18px" }}>CS1234 React JS</h5>
-              <p className="wd-dashboard-course-title" style={{ margin: "0 0 15px 0", color: "#666" }}>
-                Full Stack software developer
-              </p>
-              <button style={{ backgroundColor: "#007bff", color: "white", border: "none", padding: "8px 16px", borderRadius: "4px", cursor: "pointer" }}>Go</button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course" style={{ border: "1px solid #ccc", borderRadius: "8px", padding: "15px", backgroundColor: "#f9f9f9" }}>
-          <Link href="/Courses/1235" className="wd-dashboard-course-link" style={{ textDecoration: "none", color: "inherit" }}>
-            <Image src="/nodejslogo.jpeg" width={200} height={150} alt="Node.js logo" style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "4px" }} />
-            <div style={{ padding: "10px 0" }}>
-              <h5 style={{ margin: "0 0 10px 0", fontSize: "18px" }}>CS1235 Node.js</h5>
-              <p className="wd-dashboard-course-title" style={{ margin: "0 0 15px 0", color: "#666" }}>
-                Backend development with Node.js
-              </p>
-              <button style={{ backgroundColor: "#007bff", color: "white", border: "none", padding: "8px 16px", borderRadius: "4px", cursor: "pointer" }}>Go</button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course" style={{ border: "1px solid #ccc", borderRadius: "8px", padding: "15px", backgroundColor: "#f9f9f9" }}>
-          <Link href="/Courses/1236" className="wd-dashboard-course-link" style={{ textDecoration: "none", color: "inherit" }}>
-            <Image src="/mongodblogo.jpg" width={200} height={150} alt="MongoDB logo" style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "4px" }} />
-            <div style={{ padding: "10px 0" }}>
-              <h5 style={{ margin: "0 0 10px 0", fontSize: "18px" }}>CS1236 MongoDB</h5>
-              <p className="wd-dashboard-course-title" style={{ margin: "0 0 15px 0", color: "#666" }}>
-                NoSQL database management
-              </p>
-              <button style={{ backgroundColor: "#007bff", color: "white", border: "none", padding: "8px 16px", borderRadius: "4px", cursor: "pointer" }}>Go</button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course" style={{ border: "1px solid #ccc", borderRadius: "8px", padding: "15px", backgroundColor: "#f9f9f9" }}>
-          <Link href="/Courses/1237" className="wd-dashboard-course-link" style={{ textDecoration: "none", color: "inherit" }}>
-            <Image src="/expresslogo.jpg" width={200} height={150} alt="Express.js logo" style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "4px" }} />
-            <div style={{ padding: "10px 0" }}>
-              <h5 style={{ margin: "0 0 10px 0", fontSize: "18px" }}>CS1237 Express.js</h5>
-              <p className="wd-dashboard-course-title" style={{ margin: "0 0 15px 0", color: "#666" }}>
-                Web application framework
-              </p>
-              <button style={{ backgroundColor: "#007bff", color: "white", border: "none", padding: "8px 16px", borderRadius: "4px", cursor: "pointer" }}>Go</button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course" style={{ border: "1px solid #ccc", borderRadius: "8px", padding: "15px", backgroundColor: "#f9f9f9" }}>
-          <Link href="/Courses/1238" className="wd-dashboard-course-link" style={{ textDecoration: "none", color: "inherit" }}>
-            <Image src="/javascriptlogo.jpg" width={200} height={150} alt="JavaScript logo" style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "4px" }} />
-            <div style={{ padding: "10px 0" }}>
-              <h5 style={{ margin: "0 0 10px 0", fontSize: "18px" }}>CS1238 JavaScript</h5>
-              <p className="wd-dashboard-course-title" style={{ margin: "0 0 15px 0", color: "#666" }}>
-                Modern JavaScript programming
-              </p>
-              <button style={{ backgroundColor: "#007bff", color: "white", border: "none", padding: "8px 16px", borderRadius: "4px", cursor: "pointer" }}>Go</button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course" style={{ border: "1px solid #ccc", borderRadius: "8px", padding: "15px", backgroundColor: "#f9f9f9" }}>
-          <Link href="/Courses/1239" className="wd-dashboard-course-link" style={{ textDecoration: "none", color: "inherit" }}>
-            <Image src="/htmlcsslogo.jpg" width={200} height={150} alt="HTML/CSS logo" style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "4px" }} />
-            <div style={{ padding: "10px 0" }}>
-              <h5 style={{ margin: "0 0 10px 0", fontSize: "18px" }}>CS1239 HTML/CSS</h5>
-              <p className="wd-dashboard-course-title" style={{ margin: "0 0 15px 0", color: "#666" }}>
-                Web development fundamentals
-              </p>
-              <button style={{ backgroundColor: "#007bff", color: "white", border: "none", padding: "8px 16px", borderRadius: "4px", cursor: "pointer" }}>Go</button>
-            </div>
-          </Link>
-        </div>
-        <div className="wd-dashboard-course" style={{ border: "1px solid #ccc", borderRadius: "8px", padding: "15px", backgroundColor: "#f9f9f9" }}>
-          <Link href="/Courses/1240" className="wd-dashboard-course-link" style={{ textDecoration: "none", color: "inherit" }}>
-            <Image src="/python logo.jpeg" width={200} height={150} alt="Python logo" style={{ width: "100%", height: "150px", objectFit: "cover", borderRadius: "4px" }} />
-            <div style={{ padding: "10px 0" }}>
-              <h5 style={{ margin: "0 0 10px 0", fontSize: "18px" }}>CS1240 Python</h5>
-              <p className="wd-dashboard-course-title" style={{ margin: "0 0 15px 0", color: "#666" }}>
-                Python programming language
-              </p>
-              <button style={{ backgroundColor: "#007bff", color: "white", border: "none", padding: "8px 16px", borderRadius: "4px", cursor: "pointer" }}>Go</button>
-            </div>
-          </Link>
-        </div>
+      
+      <div 
+        id="wd-dashboard-courses" 
+        className="d-flex flex-wrap gap-4"
+        style={{ 
+          paddingLeft: "20px", 
+          paddingTop: "35px", 
+          paddingBottom: "35px",
+          gap: "20px"
+        }}
+      >
+        {coursesData.map((course) => (
+          <Card 
+            key={course.id}
+            style={{ 
+              width: "260px", 
+              height: "auto",
+              marginBottom: "35px",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+              minHeight: "320px"
+            }}
+            className="wd-dashboard-course-card"
+          >
+            <Link href={`/Courses/${course.id}/Home`} style={{ textDecoration: "none", color: "inherit" }}>
+              <CardImg 
+                variant="top" 
+                src={course.image} 
+                alt={`${course.title} logo`}
+                style={{ height: "150px", objectFit: "cover" }}
+              />
+              <CardBody style={{ padding: "15px", height: "100%" }}>
+                <CardTitle style={{ fontSize: "16px", marginBottom: "8px", fontWeight: "bold" }}>
+                  {course.title} - {course.subtitle}
+                </CardTitle>
+                <CardText style={{ color: "#666", fontSize: "14px", marginBottom: "15px", flex: "1" }}>
+                  {course.description}
+                </CardText>
+                <Button variant="primary" size="sm" className="mt-auto">
+                  Go to Course
+                </Button>
+              </CardBody>
+            </Link>
+          </Card>
+        ))}
       </div>
     </div>
   );
