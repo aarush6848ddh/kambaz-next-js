@@ -16,7 +16,7 @@ export default function Dashboard() {
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1>
       <hr />
-      <h2 id="wd-dashboard-published">Published Courses</h2>
+      <h2 id="wd-dashboard-published">My Courses</h2>
       
       <div 
         id="wd-dashboard-courses" 
