@@ -34,10 +34,10 @@ export default function KambazNavigation() {
           <div className={`fw-bold ${pathname === '/Dashboard' ? 'text-danger' : 'text-white'}`}>Dashboard</div>
         </Link>
       </ListGroupItem>
-      <ListGroupItem className={`border-0 text-center py-3 ${pathname === '/Dashboard' ? 'bg-white' : 'bg-black'}`}>
-        <Link href="/Dashboard" className={`text-decoration-none ${pathname === '/Dashboard' ? 'text-danger' : 'text-white'}`}>
-          <LiaBookSolid className={`fs-1 mb-1 ${pathname === '/Dashboard' ? 'text-danger' : 'text-white'}`} />
-          <div className={`fw-bold ${pathname === '/Dashboard' ? 'text-danger' : 'text-white'}`}>Courses</div>
+      <ListGroupItem className="border-0 bg-black text-center py-3">
+        <Link href="/Dashboard" className="text-white text-decoration-none">
+          <LiaBookSolid className="fs-1 text-white mb-1" />
+          <div className="fw-bold text-white">Courses</div>
         </Link>
       </ListGroupItem>
       <ListGroupItem className={`border-0 text-center py-3 ${pathname.startsWith('/Calendar') ? 'bg-white' : 'bg-black'}`}>

@@ -8,6 +8,9 @@ import { usePathname } from "next/navigation";
 
 export default function AccountNavigation() {
   const pathname = usePathname();
+  
+  // Debug: log the current pathname
+  console.log('Current pathname:', pathname);
   return (
     <ListGroup
       id="wd-account-navigation"
