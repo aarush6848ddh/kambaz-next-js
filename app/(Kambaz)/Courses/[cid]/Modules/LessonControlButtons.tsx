@@ -9,3 +9,4 @@ export default function LessonControlButtons() {
     </div>
   );
 }
+

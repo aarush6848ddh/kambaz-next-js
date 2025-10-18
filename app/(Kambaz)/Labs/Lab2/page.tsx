@@ -21,10 +21,12 @@ import BootstrapTables from "./BootstrapTables";
 import BootstrapLists from "./BootstrapLists";
 import BootstrapForms from "./BootstrapForms";
 import BootstrapNavigation from "./BootstrapNavigation";
+import TOC from "../TOC";
 
 export default function Lab2() {
   return (
     <Container id="wd-lab2">
+      <TOC />
       <h1>Lab 2: CSS Styling Exercises</h1>
       <h2>Student Information</h2>
       <p><strong>Name:</strong> Aarush Singh</p>

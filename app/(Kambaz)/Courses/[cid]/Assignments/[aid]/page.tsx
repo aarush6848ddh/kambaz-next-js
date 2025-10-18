@@ -1,13 +1,41 @@
+"use client";
+
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Button, FormControl, FormSelect, FormCheck, Card, CardBody, Row, Col } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
+import { assignments } from "../../../../Database";
 
 export default function AssignmentEditor() {
+  const { cid, aid } = useParams();
+  
+  // Find the assignment data
+  const assignment = assignments.find((a: any) => a._id === aid);
+  
+  // If assignment not found, show error or redirect
+  if (!assignment) {
+    return (
+      <div className="p-4">
+        <h3>Assignment not found</h3>
+        <Link href={`/Courses/${cid}/Assignments`}>
+          <Button variant="secondary">Back to Assignments</Button>
+        </Link>
+      </div>
+    );
+  }
+  
+  // Format date for datetime-local input
+  const formatDateForInput = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+  };
+
   return (
     <div id="wd-assignments-editor" className="p-4">
       {/* Assignment Name */}
       <div className="mb-3">
         <label htmlFor="wd-name" className="form-label fw-bold">Assignment Name</label>
-        <FormControl id="wd-name" defaultValue="A1" />
+        <FormControl id="wd-name" defaultValue={assignment.title} />
       </div>
       
       {/* Description */}
@@ -18,7 +46,7 @@ export default function AssignmentEditor() {
           as="textarea" 
           id="wd-description" 
           rows={8} 
-          defaultValue="Submit a link to the landing page of your Web application running on Netlify. The landing page should include the following: • Your full name and section • Links to each of the lab assignments • Link to the Kanbas application • Links to all relevant source code repositories The Kanbas application should include a link to navigate back to the landing page."
+          defaultValue={assignment.description}
         />
       </div>
       
@@ -31,7 +59,7 @@ export default function AssignmentEditor() {
                 <label htmlFor="wd-points" className="form-label fw-bold">Points</label>
               </td>
               <td>
-                <FormControl id="wd-points" defaultValue={100} type="number" />
+                <FormControl id="wd-points" defaultValue={assignment.points} type="number" />
               </td>
             </tr>
             <tr>
@@ -106,11 +134,19 @@ export default function AssignmentEditor() {
         <Row className="mb-3">
           <Col md={4}>
             <label htmlFor="wd-due-date" className="form-label fw-bold">Due</label>
-            <FormControl type="datetime-local" id="wd-due-date" defaultValue="2024-05-13T23:59" />
+            <FormControl 
+              type="datetime-local" 
+              id="wd-due-date" 
+              defaultValue={formatDateForInput(assignment.dueDate)} 
+            />
           </Col>
           <Col md={4}>
             <label htmlFor="wd-available-from" className="form-label fw-bold">Available from</label>
-            <FormControl type="datetime-local" id="wd-available-from" defaultValue="2024-05-06T00:00" />
+            <FormControl 
+              type="datetime-local" 
+              id="wd-available-from" 
+              defaultValue={formatDateForInput(assignment.availableFrom)} 
+            />
           </Col>
           <Col md={4}>
             <label htmlFor="wd-available-until" className="form-label fw-bold">Until</label>
@@ -121,8 +157,12 @@ export default function AssignmentEditor() {
       
       {/* Action Buttons */}
       <div className="d-flex justify-content-end gap-2">
-        <Button variant="secondary">Cancel</Button>
-        <Button variant="danger">Save</Button>
+        <Link href={`/Courses/${cid}/Assignments`}>
+          <Button variant="secondary">Cancel</Button>
+        </Link>
+        <Link href={`/Courses/${cid}/Assignments`}>
+          <Button variant="danger">Save</Button>
+        </Link>
       </div>
     </div>
   );

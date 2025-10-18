@@ -1,10 +1,34 @@
+"use client";
+
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Button, FormControl, ListGroup, ListGroupItem } from "react-bootstrap";
 import { BsGripVertical, BsPlus } from "react-icons/bs";
 import { FaSearch, FaCheckCircle } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
+import { assignments } from "../../../Database";
 
 export default function Assignments() {
+  const { cid } = useParams();
+  
+  // Filter assignments for the current course
+  const courseAssignments = assignments.filter((assignment: any) => assignment.course === cid);
+  
+  // Calculate total points for the course
+  const totalPoints = courseAssignments.reduce((sum: number, assignment: any) => sum + assignment.points, 0);
+  
+  // Format date for display
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      hour: 'numeric',
+      hour12: true,
+      minute: '2-digit'
+    });
+  };
+
   return (
     <div id="wd-assignments">
       {/* Top Control Bar */}
@@ -35,7 +59,7 @@ export default function Assignments() {
           ASSIGNMENTS
         </h3>
         <div className="d-flex align-items-center gap-2">
-          <span className="text-muted">40% of Total</span>
+          <span className="text-muted">{totalPoints} pts</span>
           <BsPlus className="fs-4 text-muted" />
           <IoEllipsisVertical className="fs-4 text-muted" />
         </div>
@@ -43,65 +67,30 @@ export default function Assignments() {
       
       {/* Assignments List */}
       <ListGroup className="rounded-0" id="wd-assignment-list">
-        <ListGroupItem className="wd-assignment-list-item p-3 border-start border-success border-4">
-          <div className="d-flex justify-content-between align-items-start">
-            <div className="flex-grow-1">
-              <div className="d-flex align-items-center mb-2">
-                <BsGripVertical className="me-2 fs-4 text-muted" />
-                <Link href="/Courses/1234/Assignments/123" className="wd-assignment-link fw-bold text-decoration-none">
-                  A1
-                </Link>
+        {courseAssignments.map((assignment: any) => (
+          <ListGroupItem key={assignment._id} className="wd-assignment-list-item p-3 border-start border-success border-4">
+            <div className="d-flex justify-content-between align-items-start">
+              <div className="flex-grow-1">
+                <div className="d-flex align-items-center mb-2">
+                  <BsGripVertical className="me-2 fs-4 text-muted" />
+                  <Link 
+                    href={`/Courses/${cid}/Assignments/${assignment._id}`} 
+                    className="wd-assignment-link fw-bold text-decoration-none"
+                  >
+                    {assignment.title}
+                  </Link>
+                </div>
+                <div className="text-muted small ms-4">
+                  {assignment.description} | Not available until {formatDate(assignment.availableFrom)} | Due {formatDate(assignment.dueDate)} | {assignment.points} pts
+                </div>
               </div>
-              <div className="text-muted small ms-4">
-                Multiple Modules | Not available until May 6 at 12:00am | Due May 13 at 11:59pm | 100 pts
-              </div>
-            </div>
-            <div className="d-flex gap-2">
-              <FaCheckCircle className="fs-4 text-success" />
-              <IoEllipsisVertical className="fs-4 text-muted" />
-            </div>
-          </div>
-        </ListGroupItem>
-        
-        <ListGroupItem className="wd-assignment-list-item p-3 border-start border-success border-4">
-          <div className="d-flex justify-content-between align-items-start">
-            <div className="flex-grow-1">
-              <div className="d-flex align-items-center mb-2">
-                <BsGripVertical className="me-2 fs-4 text-muted" />
-                <Link href="/Courses/1234/Assignments/124" className="wd-assignment-link fw-bold text-decoration-none">
-                  A2
-                </Link>
-              </div>
-              <div className="text-muted small ms-4">
-                Multiple Modules | Not available until May 13 at 12:00am | Due May 20 at 11:59pm | 100 pts
+              <div className="d-flex gap-2">
+                <FaCheckCircle className="fs-4 text-success" />
+                <IoEllipsisVertical className="fs-4 text-muted" />
               </div>
             </div>
-            <div className="d-flex gap-2">
-              <FaCheckCircle className="fs-4 text-success" />
-              <IoEllipsisVertical className="fs-4 text-muted" />
-            </div>
-          </div>
-        </ListGroupItem>
-        
-        <ListGroupItem className="wd-assignment-list-item p-3 border-start border-success border-4">
-          <div className="d-flex justify-content-between align-items-start">
-            <div className="flex-grow-1">
-              <div className="d-flex align-items-center mb-2">
-                <BsGripVertical className="me-2 fs-4 text-muted" />
-                <Link href="/Courses/1234/Assignments/125" className="wd-assignment-link fw-bold text-decoration-none">
-                  A3
-                </Link>
-              </div>
-              <div className="text-muted small ms-4">
-                Multiple Modules | Not available until May 20 at 12:00am | Due May 27 at 11:59pm | 100 pts
-              </div>
-            </div>
-            <div className="d-flex gap-2">
-              <FaCheckCircle className="fs-4 text-success" />
-              <IoEllipsisVertical className="fs-4 text-muted" />
-            </div>
-          </div>
-        </ListGroupItem>
+          </ListGroupItem>
+        ))}
       </ListGroup>
     </div>
   );

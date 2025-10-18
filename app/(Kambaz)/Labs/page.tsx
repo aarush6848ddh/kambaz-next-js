@@ -36,7 +36,7 @@ export default function Labs() {
             </Link>
           </li>
           <li>
-            <a href="https://github.com/aarushsingh" id="wd-github" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/aarush6848ddh" id="wd-github" target="_blank" rel="noopener noreferrer">
               My GitHub Repository
             </a>
           </li>

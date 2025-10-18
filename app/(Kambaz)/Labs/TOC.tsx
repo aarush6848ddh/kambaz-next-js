@@ -1,26 +1,30 @@
+"use client";
+
 import { Nav, NavItem, NavLink } from "react-bootstrap";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function TOC() {
+  const pathname = usePathname();
   return (
-    <Nav variant="pills">
+    <Nav variant="pills" id="wd-toc">
       <NavItem>
-        <NavLink href="/Labs" as={Link}>Labs</NavLink>
+        <NavLink as={Link} href="/Labs/Lab1" id="wd-a1"
+          active={pathname.includes("Lab1")}> Lab 1 </NavLink>
       </NavItem>
       <NavItem>
-        <NavLink href="/Labs/Lab1" as={Link}>Lab 1</NavLink>
+        <NavLink as={Link} href="/Labs/Lab2" id="wd-a2"
+          active={pathname.includes("Lab2")}> Lab 2 </NavLink>
       </NavItem>
       <NavItem>
-        <NavLink href="/Labs/Lab2" as={Link}>Lab 2</NavLink>
+        <NavLink as={Link} href="/Labs/Lab3" id="wd-a3"
+          active={pathname.includes("Lab3")}> Lab 3 </NavLink>
       </NavItem>
       <NavItem>
-        <NavLink href="/Labs/Lab3" as={Link}>Lab 3</NavLink>
+        <NavLink as={Link} href="/" id="wd-kambaz-toc"> Kambaz </NavLink>
       </NavItem>
       <NavItem>
-        <NavLink href="/" as={Link}>Kambaz</NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink href="https://github.com/aarush6848ddh">My GitHub</NavLink>
+        <NavLink href="https://github.com/aarush6848ddh" id="wd-github-toc" target="_blank" rel="noopener noreferrer"> My GitHub </NavLink>
       </NavItem>
     </Nav>
   );

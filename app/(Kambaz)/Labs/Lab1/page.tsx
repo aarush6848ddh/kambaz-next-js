@@ -1,8 +1,11 @@
 "use client";
 
+import TOC from "../TOC";
+
 export default function Lab1() {
   return (
     <div id="wd-lab1">
+      <TOC />
       <h1>Lab Exercises</h1>
       <h2>Student Information</h2>
       <p><strong>Name:</strong> Aarush Singh</p>
