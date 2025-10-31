@@ -5,3 +5,13 @@ import { users } from "./users";
 import { enrollments } from "./enrollments";
 
 export { courses, modules, assignments, users, enrollments };
+
+const db = {
+  courses,
+  modules,
+  assignments,
+  users,
+  enrollments,
+};
+
+export default db;

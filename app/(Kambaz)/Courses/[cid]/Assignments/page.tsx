@@ -1,15 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { Button, FormControl, ListGroup, ListGroupItem } from "react-bootstrap";
+import { useParams, useRouter } from "next/navigation";
+import { Button, FormControl, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
 import { BsGripVertical, BsPlus } from "react-icons/bs";
-import { FaSearch, FaCheckCircle } from "react-icons/fa";
+import { FaSearch, FaCheckCircle, FaTrash } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { assignments } from "../../../Database";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteAssignment } from "./reducer";
 
 export default function Assignments() {
   const { cid } = useParams();
+  const router = useRouter();
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const dispatch = useDispatch();
+  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; assignmentId: string | null }>({ show: false, assignmentId: null });
   
   // Filter assignments for the current course
   const courseAssignments = assignments.filter((assignment: any) => assignment.course === cid);
@@ -29,6 +35,11 @@ export default function Assignments() {
     });
   };
 
+  const handleDeleteAssignment = (assignmentId: string) => {
+    dispatch(deleteAssignment(assignmentId));
+    setDeleteConfirm({ show: false, assignmentId: null });
+  };
+
   return (
     <div id="wd-assignments">
       {/* Top Control Bar */}
@@ -46,7 +57,12 @@ export default function Assignments() {
             <BsPlus className="me-1" />
             Group
           </Button>
-          <Button variant="danger" size="lg" id="wd-add-assignment">
+          <Button 
+            variant="danger" 
+            size="lg" 
+            id="wd-add-assignment"
+            onClick={() => router.push(`/Courses/${cid}/Assignments/new`)}
+          >
             <BsPlus className="me-1" />
             Assignment
           </Button>
@@ -84,14 +100,47 @@ export default function Assignments() {
                   {assignment.description} | Not available until {formatDate(assignment.availableFrom)} | Due {formatDate(assignment.dueDate)} | {assignment.points} pts
                 </div>
               </div>
-              <div className="d-flex gap-2">
+              <div className="d-flex gap-2 align-items-center">
                 <FaCheckCircle className="fs-4 text-success" />
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="text-danger p-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setDeleteConfirm({ show: true, assignmentId: assignment._id });
+                  }}
+                  id={`wd-delete-assignment-${assignment._id}`}
+                >
+                  <FaTrash />
+                </Button>
                 <IoEllipsisVertical className="fs-4 text-muted" />
               </div>
             </div>
           </ListGroupItem>
         ))}
       </ListGroup>
+
+      {/* Delete Confirmation Modal */}
+      <Modal show={deleteConfirm.show} onHide={() => setDeleteConfirm({ show: false, assignmentId: null })}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this assignment? This action cannot be undone.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setDeleteConfirm({ show: false, assignmentId: null })}>
+            Cancel
+          </Button>
+          <Button 
+            variant="danger" 
+            onClick={() => deleteConfirm.assignmentId && handleDeleteAssignment(deleteConfirm.assignmentId)}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

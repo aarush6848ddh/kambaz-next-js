@@ -1,5 +1,7 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import AccountRedirect from "./AccountRedirect";
 
 export default function AccountPage() {
-  redirect("/Account/Signin");
+  return <AccountRedirect />;
 }

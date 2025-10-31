@@ -1,33 +1,84 @@
 "use client";
 
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { Button, FormControl, FormSelect, FormCheck, Card, CardBody, Row, Col } from "react-bootstrap";
 import { FaTimes } from "react-icons/fa";
-import { assignments } from "../../../../Database";
+import { useSelector, useDispatch } from "react-redux";
+import { addAssignment, updateAssignment } from "../reducer";
+
+// Format date for datetime-local input
+const formatDateForInput = (dateString: string) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+};
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const isNew = aid === "new";
   
-  // Find the assignment data
-  const assignment = assignments.find((a: any) => a._id === aid);
+  // Find the assignment data if editing
+  const existingAssignment = !isNew ? assignments.find((a: any) => a._id === aid) : null;
   
-  // If assignment not found, show error or redirect
-  if (!assignment) {
-    return (
-      <div className="p-4">
-        <h3>Assignment not found</h3>
-        <Link href={`/Courses/${cid}/Assignments`}>
-          <Button variant="secondary">Back to Assignments</Button>
-        </Link>
-      </div>
-    );
-  }
-  
-  // Format date for datetime-local input
-  const formatDateForInput = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+  const [assignment, setAssignment] = useState({
+    title: "",
+    description: "",
+    points: 100,
+    availableFrom: "",
+    dueDate: "",
+    availableUntil: "",
+  });
+
+  useEffect(() => {
+    if (existingAssignment) {
+      setAssignment({
+        title: existingAssignment.title || "",
+        description: existingAssignment.description || "",
+        points: existingAssignment.points || 100,
+        availableFrom: formatDateForInput(existingAssignment.availableFrom),
+        dueDate: formatDateForInput(existingAssignment.dueDate),
+        availableUntil: existingAssignment.availableUntil ? formatDateForInput(existingAssignment.availableUntil) : "",
+      });
+    } else if (isNew) {
+      // Set default dates for new assignment
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      setAssignment({
+        title: "",
+        description: "",
+        points: 100,
+        availableFrom: formatDateForInput(now.toISOString()),
+        dueDate: formatDateForInput(tomorrow.toISOString()),
+        availableUntil: "",
+      });
+    }
+  }, [existingAssignment, isNew]);
+
+  const handleSave = () => {
+    const assignmentData = {
+      _id: isNew ? undefined : aid,
+      title: assignment.title,
+      description: assignment.description,
+      points: parseInt(assignment.points.toString()),
+      course: cid,
+      availableFrom: assignment.availableFrom ? new Date(assignment.availableFrom).toISOString() : new Date().toISOString(),
+      dueDate: assignment.dueDate ? new Date(assignment.dueDate).toISOString() : new Date().toISOString(),
+      availableUntil: assignment.availableUntil ? new Date(assignment.availableUntil).toISOString() : undefined,
+      module: "",
+    };
+
+    if (isNew) {
+      dispatch(addAssignment(assignmentData));
+    } else {
+      dispatch(updateAssignment({ ...assignmentData, _id: aid }));
+    }
+    
+    router.push(`/Courses/${cid}/Assignments`);
   };
 
   return (
@@ -35,7 +86,11 @@ export default function AssignmentEditor() {
       {/* Assignment Name */}
       <div className="mb-3">
         <label htmlFor="wd-name" className="form-label fw-bold">Assignment Name</label>
-        <FormControl id="wd-name" defaultValue={assignment.title} />
+        <FormControl 
+          id="wd-name" 
+          value={assignment.title}
+          onChange={(e) => setAssignment({ ...assignment, title: e.target.value })}
+        />
       </div>
       
       {/* Description */}
@@ -46,7 +101,8 @@ export default function AssignmentEditor() {
           as="textarea" 
           id="wd-description" 
           rows={8} 
-          defaultValue={assignment.description}
+          value={assignment.description}
+          onChange={(e) => setAssignment({ ...assignment, description: e.target.value })}
         />
       </div>
       
@@ -59,7 +115,12 @@ export default function AssignmentEditor() {
                 <label htmlFor="wd-points" className="form-label fw-bold">Points</label>
               </td>
               <td>
-                <FormControl id="wd-points" defaultValue={assignment.points} type="number" />
+                <FormControl 
+                  id="wd-points" 
+                  value={assignment.points}
+                  onChange={(e) => setAssignment({ ...assignment, points: parseInt(e.target.value) || 0 })}
+                  type="number" 
+                />
               </td>
             </tr>
             <tr>
@@ -137,7 +198,8 @@ export default function AssignmentEditor() {
             <FormControl 
               type="datetime-local" 
               id="wd-due-date" 
-              defaultValue={formatDateForInput(assignment.dueDate)} 
+              value={assignment.dueDate}
+              onChange={(e) => setAssignment({ ...assignment, dueDate: e.target.value })}
             />
           </Col>
           <Col md={4}>
@@ -145,24 +207,36 @@ export default function AssignmentEditor() {
             <FormControl 
               type="datetime-local" 
               id="wd-available-from" 
-              defaultValue={formatDateForInput(assignment.availableFrom)} 
+              value={assignment.availableFrom}
+              onChange={(e) => setAssignment({ ...assignment, availableFrom: e.target.value })}
             />
           </Col>
           <Col md={4}>
             <label htmlFor="wd-available-until" className="form-label fw-bold">Until</label>
-            <FormControl type="datetime-local" id="wd-available-until" />
+            <FormControl 
+              type="datetime-local" 
+              id="wd-available-until" 
+              value={assignment.availableUntil}
+              onChange={(e) => setAssignment({ ...assignment, availableUntil: e.target.value })}
+            />
           </Col>
         </Row>
       </div>
       
       {/* Action Buttons */}
       <div className="d-flex justify-content-end gap-2">
-        <Link href={`/Courses/${cid}/Assignments`}>
-          <Button variant="secondary">Cancel</Button>
-        </Link>
-        <Link href={`/Courses/${cid}/Assignments`}>
-          <Button variant="danger">Save</Button>
-        </Link>
+        <Button 
+          variant="secondary" 
+          onClick={() => router.push(`/Courses/${cid}/Assignments`)}
+        >
+          Cancel
+        </Button>
+        <Button 
+          variant="danger" 
+          onClick={handleSave}
+        >
+          Save
+        </Button>
       </div>
     </div>
   );

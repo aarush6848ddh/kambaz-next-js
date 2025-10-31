@@ -1,3 +1,5 @@
+"use client";
+
 import VariablesAndConstants from "./VariablesAndConstants";
 import VariableTypes from "./VariableTypes";
 import BooleanVariables from "./BooleanVariables";
@@ -31,13 +33,29 @@ import Square from "./Square";
 import Highlight from "./Highlight";
 import PathParameters from "./PathParameters";
 import TOC from "../TOC";
+import { useSelector } from "react-redux";
+import { ListGroup, ListGroupItem } from "react-bootstrap";
 
 export default function Lab3() {
   console.log("Hello World!");
+  const { todos } = useSelector((state: any) => state.todosReducer);
   return (
     <div id="wd-lab3">
       <TOC />
       <h3>Lab 3</h3>
+      {todos && todos.length > 0 && (
+        <div>
+          <h4>Redux Todos (Shared State)</h4>
+          <ListGroup>
+            {todos.map((todo: { id: string; title: string }) => (
+              <ListGroupItem key={todo.id}>
+                {todo.title}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+          <hr />
+        </div>
+      )}
       <VariablesAndConstants/>
       <VariableTypes/>
       <BooleanVariables/>

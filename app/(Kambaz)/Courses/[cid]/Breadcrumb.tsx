@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { courses } from "../../Database";
+import { useSelector } from "react-redux";
 
 interface BreadcrumbProps {
   cid: string;
@@ -9,7 +9,9 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ cid }: BreadcrumbProps) {
   const pathname = usePathname();
-  const course = courses.find((course) => course._id === cid);
+  const { courses } = useSelector((state: any) => state.coursesReducer);
+  const course = courses.find((course: any) => course._id === cid);
+  // find the course by its ID
   
   // Extract the current section from the pathname
   // For URLs like /Courses/1234/Home, we want "Home"
