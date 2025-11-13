@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { courses } from "../Database";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
-  courses: courses,
+  courses: [],
   course: {
     _id: "0",
     name: "New Course",
@@ -23,14 +22,18 @@ const coursesSlice = createSlice({
       state.course = course;
     },
     addCourse: (state, { payload: course }) => {
-      const newCourse = { 
-        ...course, 
-        _id: uuidv4(),
-        number: course.number || course.name,
-        startDate: course.startDate || "2023-09-10",
-        endDate: course.endDate || "2023-12-15",
-        image: course.image || "/images/reactjs.jpg",
-      };
+      // If course already has an _id (from server), use it as-is
+      // Otherwise, generate a new UUID for client-side only
+      const newCourse = course._id 
+        ? course 
+        : { 
+            ...course, 
+            _id: uuidv4(),
+            number: course.number || course.name,
+            startDate: course.startDate || "2023-09-10",
+            endDate: course.endDate || "2023-12-15",
+            image: course.image || "/images/reactjs.jpg",
+          };
       state.courses = [...state.courses, newCourse] as any;
       // Reset form to default after adding
       state.course = {
@@ -53,10 +56,13 @@ const coursesSlice = createSlice({
         c._id === state.course._id ? state.course : c
       ) as any;
     },
+    setCourses: (state, { payload: courses }) => {
+      state.courses = courses;
+    },
   },
 });
 
-export const { setCourse, addCourse, deleteCourse, updateCourse } =
+export const { setCourse, addCourse, deleteCourse, updateCourse, setCourses } =
   coursesSlice.actions;
 export default coursesSlice.reducer;
 

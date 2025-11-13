@@ -6,22 +6,22 @@ import Link from "next/link";
 import { FormControl, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../reducer";
-import db from "../../Database";
+import * as client from "../client";
 
 export default function Signin() {
   const [credentials, setCredentials] = useState<any>({});
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const signin = () => {
-    const user = db.users.find(
-      (u: any) =>
-        (u.username === credentials.username || u.loginId === credentials.username) &&
-        u.password === credentials.password
-    );
-    if (!user) return;
-    dispatch(setCurrentUser(user));
-    router.push("/Dashboard");
+  const signin = async () => {
+    try {
+      const user = await client.signin(credentials);
+      if (!user) return;
+      dispatch(setCurrentUser(user));
+      router.push("/Dashboard");
+    } catch (error: any) {
+      alert(error.message || "Unable to login. Please try again.");
+    }
   };
 
   return (

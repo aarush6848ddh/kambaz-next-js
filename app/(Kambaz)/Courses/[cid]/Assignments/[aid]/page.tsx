@@ -6,6 +6,7 @@ import { Button, FormControl, FormSelect, FormCheck, Card, CardBody, Row, Col } 
 import { FaTimes } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { addAssignment, updateAssignment } from "../reducer";
+import * as assignmentsClient from "../client";
 
 // Format date for datetime-local input
 const formatDateForInput = (dateString: string) => {
@@ -20,9 +21,21 @@ export default function AssignmentEditor() {
   const dispatch = useDispatch();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const isNew = aid === "new";
+  const [existingAssignment, setExistingAssignment] = useState<any>(null);
   
-  // Find the assignment data if editing
-  const existingAssignment = !isNew ? assignments.find((a: any) => a._id === aid) : null;
+  useEffect(() => {
+    if (!isNew && aid) {
+      const fetchAssignment = async () => {
+        try {
+          const assignment = await assignmentsClient.findAssignmentById(aid as string);
+          setExistingAssignment(assignment);
+        } catch (error) {
+          console.error("Error fetching assignment:", error);
+        }
+      };
+      fetchAssignment();
+    }
+  }, [aid, isNew]);
   
   const [assignment, setAssignment] = useState({
     title: "",
@@ -59,26 +72,30 @@ export default function AssignmentEditor() {
     }
   }, [existingAssignment, isNew]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const assignmentData = {
-      _id: isNew ? undefined : aid,
       title: assignment.title,
       description: assignment.description,
       points: parseInt(assignment.points.toString()),
-      course: cid,
       availableFrom: assignment.availableFrom ? new Date(assignment.availableFrom).toISOString() : new Date().toISOString(),
       dueDate: assignment.dueDate ? new Date(assignment.dueDate).toISOString() : new Date().toISOString(),
       availableUntil: assignment.availableUntil ? new Date(assignment.availableUntil).toISOString() : undefined,
       module: "",
     };
 
-    if (isNew) {
-      dispatch(addAssignment(assignmentData));
-    } else {
-      dispatch(updateAssignment({ ...assignmentData, _id: aid }));
+    try {
+      if (isNew) {
+        const newAssignment = await assignmentsClient.createAssignment(cid as string, assignmentData);
+        dispatch(addAssignment(newAssignment));
+      } else {
+        await assignmentsClient.updateAssignment({ ...assignmentData, _id: aid });
+        dispatch(updateAssignment({ ...assignmentData, _id: aid }));
+      }
+      router.push(`/Courses/${cid}/Assignments`);
+    } catch (error) {
+      console.error("Error saving assignment:", error);
+      alert("Failed to save assignment. Please try again.");
     }
-    
-    router.push(`/Courses/${cid}/Assignments`);
   };
 
   return (

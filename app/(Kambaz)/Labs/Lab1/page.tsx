@@ -9,13 +9,15 @@ export default function Lab1() {
       <h1>Lab Exercises</h1>
       <h2>Student Information</h2>
       <p><strong>Name:</strong> Aarush Singh</p>
-      <p><strong>Section:</strong> CS4550 Fall 2024</p>
+      <p><strong>Section:</strong> CS4550 Fall 2025</p>
       
       <h2>Lab Assignments</h2>
       <ul>
         <li><a href="/Labs/Lab1">Lab 1: HTML Examples</a></li>
         <li><a href="/Labs/Lab2">Lab 2: CSS Basics</a></li>
         <li><a href="/Labs/Lab3">Lab 3: JavaScript Fundamentals</a></li>
+        <li><a href="/Labs/Lab4">Lab 4: React Events</a></li>
+        <li><a href="/Labs/Lab5">Lab 5: HTTP Web Server</a></li>
       </ul>
       
       <h2>Applications</h2>
@@ -25,8 +27,8 @@ export default function Lab1() {
       
       <h2>Source Code Repositories</h2>
       <ul>
-        <li><a href="https://github.com/aarush6848ddh/kambaz-next-js" target="_blank">Kambaz Next.js Repository</a></li>
-        <li><a href="https://github.com/aarush6848ddh" target="_blank">My GitHub Profile</a></li>
+        <li><a href="https://github.com/aarush6848ddh/kambaz-next-js" target="_blank" rel="noopener noreferrer">Kambaz Next.js Repository (React App)</a></li>
+        <li><a href="https://github.com/aarush6848ddh/kambaz-node-server-app" target="_blank" rel="noopener noreferrer">Kambaz Node.js Server Repository</a></li>
       </ul>
       
       <hr />

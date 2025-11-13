@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { ListGroup, ListGroupItem, FormControl } from "react-bootstrap";
@@ -8,7 +8,9 @@ import { BsGripVertical } from "react-icons/bs";
 import ModulesControls from "./ModulesControls";
 import ModuleControlButtons from "./ModuleControlButtons";
 import LessonControlButtons from "./LessonControlButtons";
-import { addModule, editModule, updateModule, deleteModule } from "./reducer";
+import { setModules, addModule, editModule, updateModule, deleteModule } from "./reducer";
+import * as coursesClient from "../../client";
+import * as modulesClient from "./client";
 
 export default function Modules() {
   const params = useParams();
@@ -16,19 +18,51 @@ export default function Modules() {
   const [moduleName, setModuleName] = useState("");
   const { modules } = useSelector((state: any) => state.modulesReducer); // retrieve modules state variables
   const dispatch = useDispatch(); // get dispatch to call reducer
-  // functions
+  
+  useEffect(() => {
+    const fetchModules = async () => {
+      const modules = await coursesClient.findModulesForCourse(cid as string);
+      dispatch(setModules(modules));
+    };
+    fetchModules();
+  }, [cid, dispatch]);
+
+  const removeModule = async (moduleId: string) => {
+    try {
+      await modulesClient.deleteModule(moduleId);
+      dispatch(deleteModule(moduleId));
+    } catch (error) {
+      console.error("Error deleting module:", error);
+      alert("Failed to delete module. Please try again.");
+    }
+  };
+
+  const saveModule = async (module: any) => {
+    try {
+      await modulesClient.updateModule(module);
+      dispatch(updateModule(module));
+    } catch (error) {
+      console.error("Error updating module:", error);
+      alert("Failed to update module. Please try again.");
+    }
+  };
 
   return (
     <div>
       <ModulesControls
         moduleName={moduleName}
         setModuleName={setModuleName}
-        addModule={() => {
-          if (!moduleName.trim()) return; // Don't add empty modules
-          dispatch(addModule({ name: moduleName, course: cid }));
-          // wrap reducer functions with dispatch
-          setModuleName("");
-          // clear module name
+        addModule={async () => {
+          if (!moduleName.trim() || !cid) return; // Don't add empty modules
+          try {
+            const newModule = { name: moduleName, course: cid };
+            const module = await coursesClient.createModuleForCourse(cid, newModule);
+            dispatch(addModule(module));
+            setModuleName("");
+          } catch (error) {
+            console.error("Error creating module:", error);
+            alert("Failed to create module. Please try again.");
+          }
         }}
       />
       <br />
@@ -37,9 +71,7 @@ export default function Modules() {
       <br />
       
       <ListGroup className="rounded-0" id="wd-modules">
-        {modules
-          .filter((module: any) => module.course === cid)
-          .map((module: any) => (
+        {modules.map((module: any) => (
             <ListGroupItem key={module._id} className="wd-module p-0 mb-5 fs-5 border-gray">
               <div className="wd-title p-3 ps-2 bg-secondary">
                 <BsGripVertical className="me-2 fs-3" />
@@ -49,7 +81,7 @@ export default function Modules() {
                   <>
                     <FormControl
                       className="w-50 d-inline-block"
-                      defaultValue={module.name}
+                      value={module.name}
                       onChange={(e) => {
                         dispatch(
                           updateModule({ ...module, name: e.target.value })
@@ -57,7 +89,7 @@ export default function Modules() {
                       }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                          dispatch(updateModule({ ...module, editing: false }));
+                          saveModule({ ...module, editing: false });
                         }
                       }}
                     />
@@ -73,9 +105,7 @@ export default function Modules() {
                 {/* hide the text field */}
                 <ModuleControlButtons
                   moduleId={module._id}
-                  deleteModule={(moduleId) => {
-                    dispatch(deleteModule(moduleId));
-                  }}
+                  deleteModule={(moduleId) => removeModule(moduleId)}
                   editModule={(moduleId) => dispatch(editModule(moduleId))}
                 />
                 {/* wrap reducer functions with dispatch */}

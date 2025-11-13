@@ -6,7 +6,7 @@ export default function Labs() {
     <div id="wd-labs">
       <h1>Labs</h1>
       <p><strong>Student Name:</strong> Aarush Singh</p>
-      <p><strong>Section:</strong> CS4550 Fall 2024</p>
+      <p><strong>Section:</strong> CS4550 Fall 2025</p>
       
       <hr />
       
@@ -33,6 +33,11 @@ export default function Labs() {
           <li>
             <Link href="/Labs/Lab4" id="wd-lab4-link">
               Lab 4: React Events
+            </Link>
+          </li>
+          <li>
+            <Link href="/Labs/Lab5" id="wd-lab5-link">
+              Lab 5: HTTP Web Server
             </Link>
           </li>
           <li>

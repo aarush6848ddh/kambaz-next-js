@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormControl, FormSelect, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "../reducer";
+import * as client from "../client";
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>({});
@@ -12,7 +13,18 @@ export default function Profile() {
   const router = useRouter();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-  const signout = () => {
+  const updateProfile = async () => {
+    try {
+      const updatedProfile = await client.updateUser(profile);
+      dispatch(setCurrentUser(updatedProfile));
+      alert("Profile updated successfully!");
+    } catch (error: any) {
+      alert(error.message || "Failed to update profile. Please try again.");
+    }
+  };
+
+  const signout = async () => {
+    await client.signout();
     dispatch(setCurrentUser(null));
     router.push("/Account/Signin");
   };
@@ -32,38 +44,38 @@ export default function Profile() {
         {profile && (
           <>
             <FormControl
-              defaultValue={profile.username || profile.loginId || ""}
+              value={profile.username || profile.loginId || ""}
               onChange={(e) => setProfile({ ...profile, username: e.target.value })}
               placeholder="username"
               className="mb-2"
             />
             <FormControl
-              defaultValue={profile.password || ""}
+              value={profile.password || ""}
               onChange={(e) => setProfile({ ...profile, password: e.target.value })}
               placeholder="password"
               type="password"
               className="mb-2"
             />
             <FormControl
-              defaultValue={profile.firstName || ""}
+              value={profile.firstName || ""}
               onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
               placeholder="First Name"
               className="mb-2"
             />
             <FormControl
-              defaultValue={profile.lastName || ""}
+              value={profile.lastName || ""}
               onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
               placeholder="Last Name"
               className="mb-2"
             />
             <FormControl
-              defaultValue={profile.dob || ""}
+              value={profile.dob || ""}
               onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
               type="date"
               className="mb-2"
             />
             <FormControl
-              defaultValue={profile.email || ""}
+              value={profile.email || ""}
               onChange={(e) => setProfile({ ...profile, email: e.target.value })}
               type="email"
               placeholder="Email"
@@ -79,6 +91,9 @@ export default function Profile() {
               <option value="FACULTY">Faculty</option>
               <option value="STUDENT">Student</option>
             </FormSelect>
+            <Button variant="primary" className="w-100 mb-2" onClick={updateProfile} id="wd-update-profile-btn">
+              Update
+            </Button>
             <Button variant="danger" className="w-100" onClick={signout}>
               Sign out
             </Button>
