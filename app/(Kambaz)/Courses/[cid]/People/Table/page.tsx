@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Table, Button, Modal, FormControl, FormSelect } from "react-bootstrap";
-import { FaUserCircle, FaTrash, FaPencil, FaPlus } from "react-icons/fa";
+import { FaUserCircle, FaTrash, FaPencilAltAlt, FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import * as usersClient from "../client";
-import * as enrollmentsClient from "../../../Enrollments/client";
+import * as enrollmentsClient from "../../../../Enrollments/client";
 
 export default function PeopleTable() {
   const { cid } = useParams();
@@ -153,7 +153,7 @@ export default function PeopleTable() {
                     className="text-primary p-0 me-2"
                     onClick={() => handleEdit(user)}
                   >
-                    <FaPencil />
+                    <FaPencilAlt />
                   </Button>
                   <Button
                     variant="link"
