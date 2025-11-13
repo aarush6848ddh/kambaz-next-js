@@ -1,10 +1,6 @@
 "use client";
 
 import TOC from "../TOC";
-import BasicHttpServer from "./BasicHttpServer";
-import ExpressServer from "./ExpressServer";
-import ExpressRoutes from "./ExpressRoutes";
-import RunningServer from "./RunningServer";
 import EnvironmentVariables from "./EnvironmentVariables";
 import PathParameters from "./PathParameters";
 import QueryParameters from "./QueryParameters";
@@ -42,11 +38,6 @@ export default function Lab5() {
       <HttpClient />
       <WorkingWithObjectsAsynchronously />
       <WorkingWithArraysAsynchronously />
-      
-      <BasicHttpServer />
-      <ExpressServer />
-      <ExpressRoutes />
-      <RunningServer />
     </div>
   );
 }
