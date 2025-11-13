@@ -1,6 +1,8 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import AccountRedirect from "./(Kambaz)/Account/AccountRedirect";
 
 export default function Home() {
-  redirect("/Account");
+  return <AccountRedirect />;
 }
 
